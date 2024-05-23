@@ -6,7 +6,7 @@ import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductsService {
-  dataProducts: Product[] = products;
+  private dataProducts: Product[] = products;
 
   create(createProductDto: CreateProductDto) {
     this.dataProducts.push(createProductDto);
@@ -18,8 +18,7 @@ export class ProductsService {
   }
 
   findOne(id: number) {
-    const _product = this.dataProducts.find(element => element.id == id);
-    return _product;
+    return this.dataProducts.find(element => element.id == id);
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
