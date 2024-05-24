@@ -5,14 +5,12 @@ import { UsersService } from '../users/users.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) { }
 
   async signIn(username: string, pass: string) {
     const user = await this.usersService.findOne(username);
-    console.debug(user)
-    console.debug(pass)
     if (user?.password !== pass) {
       throw new UnauthorizedException();
     }
