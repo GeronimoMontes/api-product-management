@@ -3,20 +3,71 @@ POST http://localhost:3000/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "john",
-    "password": "changeme"
+    "username": "user_test",
+    "password": "123"
 }
 
 ###
 
+
 GET http://localhost:3000/auth/profile HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTcxNjQ5MTM0NSwiZXhwIjoxNzE2NDkxNDA1fQ.qTK86XED2XWGHcQeJbTsn9KbClrVt54wi5SyR86kgjY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJfdGVzdCIsInN1YiI6IjY2NGZlNWVhZDk1NGE4ODU1ZjFmOWE5NCIsImlhdCI6MTcxNjUxMjMwNiwiZXhwIjoxNzQ3NjE2MzA2fQ.5C6c22agmu4DU21OZqcvIQBhSl3Nf_EKnREHRFlTPH8
  
 ###
  
 
 GET http://localhost:3000/products HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTcxNjQ5MTY4OSwiZXhwIjoxNzE2NDkxNzQ5fQ.xJ7nKrGNHrldAST5WxmOp6JpAEhSoCid757jWv2je08
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJfdGVzdCIsInN1YiI6IjY2NGZlNWVhZDk1NGE4ODU1ZjFmOWE5NCIsImlhdCI6MTcxNjUxMjMwNiwiZXhwIjoxNzQ3NjE2MzA2fQ.5C6c22agmu4DU21OZqcvIQBhSl3Nf_EKnREHRFlTPH8
  
 ###
  
+
+POST http://localhost:3000/products HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJfdGVzdCIsInN1YiI6IjY2NGZlNWVhZDk1NGE4ODU1ZjFmOWE5NCIsImlhdCI6MTcxNjUxMjMwNiwiZXhwIjoxNzQ3NjE2MzA2fQ.5C6c22agmu4DU21OZqcvIQBhSl3Nf_EKnREHRFlTPH8
+Content-Type: application/json
+
+{ 
+    "name": "Ice Cream - Fudge Bars", 
+    "description": "Chicken - Whole Roasting", 
+    "price": 456.00 
+}
+
+
+####
+
+
+GET http://localhost:3000/products HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJfdGVzdCIsInN1YiI6IjY2NGZlNWVhZDk1NGE4ODU1ZjFmOWE5NCIsImlhdCI6MTcxNjUxMjMwNiwiZXhwIjoxNzQ3NjE2MzA2fQ.5C6c22agmu4DU21OZqcvIQBhSl3Nf_EKnREHRFlTPH8
+
+
+####
+
+
+GET http://localhost:3000/products/664fd7448ad47fdbcdcf3bee HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJfdGVzdCIsInN1YiI6IjY2NGZlNWVhZDk1NGE4ODU1ZjFmOWE5NCIsImlhdCI6MTcxNjUxMjMwNiwiZXhwIjoxNzQ3NjE2MzA2fQ.5C6c22agmu4DU21OZqcvIQBhSl3Nf_EKnREHRFlTPH8
+
+
+####
+
+
+PATCH http://localhost:3000/products/664fd7448ad47fdbcdcf3bee HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJfdGVzdCIsInN1YiI6IjY2NGZlNWVhZDk1NGE4ODU1ZjFmOWE5NCIsImlhdCI6MTcxNjUxMjMwNiwiZXhwIjoxNzQ3NjE2MzA2fQ.5C6c22agmu4DU21OZqcvIQBhSl3Nf_EKnREHRFlTPH8
+Content-Type: application/json
+
+{ 
+    "name": "Ice Cream - Fudge Bars", 
+    "description": "Chicken - Whole Roasting", 
+    "price": 100.00 
+}
+
+
+ 
+####
+
+
+DELETE http://localhost:3000/products/664fd7448ad47fdbcdcf3bee HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJfdGVzdCIsInN1YiI6IjY2NGZlNWVhZDk1NGE4ODU1ZjFmOWE5NCIsImlhdCI6MTcxNjUxMjMwNiwiZXhwIjoxNzQ3NjE2MzA2fQ.5C6c22agmu4DU21OZqcvIQBhSl3Nf_EKnREHRFlTPH8
+
+
+####
+
