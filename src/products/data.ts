@@ -1,6 +1,5 @@
-import { Product } from "./entities/product.entity";
 
-export const products: Product[] = [{ "id": 1, "name": "Lid Coffeecup 12oz D9542b", "description": "Radish - Pickled", "price": 231.52, },
+export const products = [{ "id": 1, "name": "Lid Coffeecup 12oz D9542b", "description": "Radish - Pickled", "price": 231.52, },
 { "id": 2, "name": "Ice Cream - Fudge Bars", "description": "Chicken - Whole Roasting", "price": 456.00, },
 { "id": 3, "name": "Wine - Redchard Merritt", "description": "Wine - Penfolds Koonuga Hill", "price": 372.93, },
 { "id": 4, "name": "Squid - Breaded", "description": "Cheese - Cheddar, Mild", "price": 419.73, },
