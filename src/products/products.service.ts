@@ -13,8 +13,8 @@ export class ProductsService {
     return createProduct;
   }
 
-  findAll(): Promise<Product[]> {
-    return this.productModel.find().exec();
+  findAll(limit, skip): Promise<Product[]> {
+    return this.productModel.find().limit(limit).skip(skip).exec();
   }
 
   findOne(id: number): Promise<Product> {

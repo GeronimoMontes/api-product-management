@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 
@@ -12,7 +12,13 @@ export class AuthService {
   async signIn(username: string, pass: string) {
     const user = await this.usersService.findOne(username);
     if (user?.password !== pass) {
-      throw new UnauthorizedException();
+      throw new HttpException({
+        status: HttpStatus.UNAUTHORIZED,
+        error: 'Authentication failed.',
+      }, HttpStatus.FORBIDDEN, {
+        cause: new Error( "User not foud.")
+      });
+      // throw new UnauthorizedException();
     }
     const payload = { username: user.username, sub: user.id };
     return {
