@@ -6,26 +6,35 @@ import { Product } from './interfaces/products.interface';
 
 @Injectable()
 export class ProductsService {
-  constructor(@Inject('PRODUCT_MODEL') private readonly productModel: Model<Product>) { }
+  constructor(
+    @Inject('PRODUCT_MODEL') private readonly productModel: Model<Product>,
+  ) {}
 
   create(createProductDto: CreateProductDto): Promise<Product> {
     const createProduct = this.productModel.create(createProductDto);
     return createProduct;
   }
 
-  findAll(limit, skip): Promise<Product[]> {
-    return this.productModel.find().limit(limit).skip(skip).exec();
+  findAll(limit=100, skip=1, search=''): Promise<Product[]> {
+    const qry = (search != '') ? { $text: { $search:`${search}`  } } : {}
+    return this.productModel
+      .find(qry)
+      .limit(limit)
+      .skip(skip)
+      .exec();
   }
 
   findOne(id: number): Promise<Product> {
-    return this.productModel.findOne({ "_id": id }).exec();
+    return this.productModel.findOne({ _id: id }).exec();
   }
 
   update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
-    return this.productModel.findOneAndUpdate({ "_id": id }, updateProductDto).exec();
+    return this.productModel
+      .findOneAndUpdate({ _id: id }, updateProductDto)
+      .exec();
   }
 
   remove(id: number): Promise<Product> {
-    return this.productModel.findByIdAndDelete({ "_id": id }).exec();
+    return this.productModel.findByIdAndDelete({ _id: id }).exec();
   }
 }

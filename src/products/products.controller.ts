@@ -13,8 +13,8 @@ export class ProductsController {
   }
 
   @Get()
-  findAll(@Query() {limit, skip}) {
-    return this.productsService.findAll(limit ,skip);
+  findAll(@Query() {limit, skip, search}) {
+    return this.productsService.findAll(limit ,skip, search);
   }
 
   @Get(':id')
