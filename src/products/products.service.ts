@@ -31,8 +31,9 @@ export class ProductsService {
 
     return {
       data: data,
-      page_total: page_total,
-      documents_count: count,
+      count_current_data: data.length,
+      countPages: page_total,
+      resultsCount: count,
     };
   }
 
