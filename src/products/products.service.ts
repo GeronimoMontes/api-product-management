@@ -8,20 +8,32 @@ import { Product } from './interfaces/products.interface';
 export class ProductsService {
   constructor(
     @Inject('PRODUCT_MODEL') private readonly productModel: Model<Product>,
-  ) {}
+  ) { }
 
   create(createProductDto: CreateProductDto): Promise<Product> {
     const createProduct = this.productModel.create(createProductDto);
     return createProduct;
   }
 
-  findAll(limit=100, skip=1, search=''): Promise<Product[]> {
-    const qry = (search != '') ? { $text: { $search:`${search}`  } } : {}
-    return this.productModel
+  async findAll(limit, skip, search = ''): Promise<any> {
+    const qry =
+    search !== ''
+      ? { $text: { $search: `\"${search}\"` } }
+      : {};
+    const count = await this.productModel.countDocuments(qry).exec();
+    const page_total = Math.floor((count - 1) / limit) + 1;
+    const data = await this.productModel
       .find(qry)
+      .sort({ name: 'ascending', description: 'ascending' })
       .limit(limit)
       .skip(skip)
       .exec();
+
+    return {
+      data: data,
+      page_total: page_total,
+      documents_count: count,
+    };
   }
 
   findOne(id: number): Promise<Product> {

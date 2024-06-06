@@ -16,7 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc
 ###
  
 
-GET http://localhost:3000/products?skip=8&limit=100&search=placerat HTTP/1.1
+GET http://localhost:3000/products?skip=8&limit=100&search= HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJzdWIiOiI2NjU3NzM4M2U0NTIzZGRhOGRiODlmMDUiLCJpYXQiOjE3MTcxODM1ODUsImV4cCI6MTc0ODI4NzU4NX0.QEWcCmHfHQW2VMRflZV8ra8QAzN1ChC2ecGs3EpOT-c
  
 ###
