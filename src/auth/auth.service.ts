@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import { ServerException } from 'src/http/http-exception';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,7 @@ export class AuthService {
   async signIn(username: string, pass: string) {
     const user = await this.usersService.findOne(username);
     if (user?.password !== pass) {
-      throw new HttpException({
+      throw new ServerException({
         status: HttpStatus.UNAUTHORIZED,
         error: 'Authentication failed.',
       }, HttpStatus.FORBIDDEN, {
