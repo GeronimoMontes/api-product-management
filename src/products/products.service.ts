@@ -8,7 +8,7 @@ import { Product } from './interfaces/products.interface';
 export class ProductsService {
   constructor(
     @Inject('PRODUCT_MODEL') private readonly productModel: Model<Product>,
-  ) { }
+  ) {}
 
   create(createProductDto: CreateProductDto): Promise<Product> {
     const createProduct = this.productModel.create(createProductDto);
@@ -16,10 +16,7 @@ export class ProductsService {
   }
 
   async findAll(limit, skip, search = ''): Promise<any> {
-    const qry =
-    search !== ''
-      ? { $text: { $search: `\"${search}\"` } }
-      : {};
+    const qry = search !== '' ? { $text: { $search: `\"${search}\"` } } : {};
     const count = await this.productModel.countDocuments(qry).exec();
     const page_total = Math.floor((count - 1) / limit) + 1;
     const data = await this.productModel
@@ -35,6 +32,11 @@ export class ProductsService {
       countPages: page_total,
       resultsCount: count,
     };
+  }
+
+  async isNameTaken(name: string): Promise<boolean> {
+    const data = await this.productModel.find({ name }).exec();
+    return data.length > 0;
   }
 
   findOne(id: number): Promise<Product> {
