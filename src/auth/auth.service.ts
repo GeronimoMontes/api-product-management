@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../users/service/users.service';
 import { ServerException } from 'src/http/http-exception';
 import { SignInDto } from './dto/sign-in.dto';
 
@@ -31,7 +31,7 @@ export class AuthService {
       );
       // throw new UnauthorizedException();
     }
-    const payload = { username: user.username, sub: user.id };
+    const payload = { username: user.username };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

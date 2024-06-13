@@ -1,13 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from './interfaces/products.interface';
+import { CreateProductDto } from '../dto/create-product.dto';
+import { UpdateProductDto } from '../dto/update-product.dto';
+import { Product } from '../interfaces/products.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { ProductDoc } from '../interfaces/products-document.interface';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    @Inject('PRODUCT_MODEL') private readonly productModel: Model<Product>,
+    @InjectModel('Products') private readonly productModel: Model<ProductDoc>,
   ) {}
 
   create(createProductDto: CreateProductDto): Promise<Product> {
@@ -39,17 +41,17 @@ export class ProductsService {
     return data.length > 0;
   }
 
-  findOne(id: number): Promise<Product> {
+  findOne(id: string): Promise<Product> {
     return this.productModel.findOne({ _id: id }).exec();
   }
 
-  update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
+  update(id: string, updateProductDto: UpdateProductDto): Promise<Product> {
     return this.productModel
       .findOneAndUpdate({ _id: id }, updateProductDto)
       .exec();
   }
 
-  remove(id: number): Promise<Product> {
+  remove(id: string): Promise<Product> {
     return this.productModel.findByIdAndDelete({ _id: id }).exec();
   }
 }
