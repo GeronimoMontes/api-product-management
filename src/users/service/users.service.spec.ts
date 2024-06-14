@@ -10,6 +10,11 @@ const mockUser = (username = 'test', password = '123'): User => ({
   password,
 });
 
+const mockUserDoc = (mock?: Partial<User>): Partial<UserDoc> => ({
+  username: mock?.username || 'test',
+  password: mock?.password || '123',
+});
+
 describe('UsersService', () => {
   let service: UsersService;
   let model: Model<UserDoc>;
@@ -37,5 +42,22 @@ describe('UsersService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should create a user', async () => {
+    jest
+      .spyOn(model, 'create')
+      .mockImplementationOnce(() => Promise.resolve(mockUserDoc() as any));
+    const newUser = await service.create(mockUser());
+    expect(newUser).toEqual(mockUserDoc());
+  });
+
+  it('should find one user by username', async () => {
+    const username = 'test';
+    jest.spyOn(model, 'findOne').mockReturnValueOnce({
+      exec: jest.fn().mockResolvedValueOnce(mockUserDoc()),
+    } as any);
+    const user = await service.findOne(username);
+    expect(user).toEqual(mockUserDoc());
   });
 });
