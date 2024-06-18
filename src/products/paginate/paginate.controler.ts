@@ -1,15 +1,19 @@
 import { Model } from 'mongoose';
 import { Metadata, Paginate, PaginateQueryRaw } from './paginate';
+import { getQryOrder, getQrySeach } from './paginate-utils';
 
 export const getAllPaginated = async <T>(
   model: Model<T>,
   query: PaginateQueryRaw,
 ): Promise<Paginate<T>> => {
   const skip = query.limit * query.page - query.limit;
-  const count = await model.estimatedDocumentCount();
+  const count = await model.countDocuments();
+  const search = getQrySeach(query.search);
+  const sort = getQryOrder(query.sort);
+
   const data = await model
-    .find(query.searchTerm)
-    .sort(query.sort)
+    .find(search)
+    .sort(sort)
     .limit(query.limit)
     .skip(skip)
     .exec();
@@ -30,7 +34,7 @@ export const getAllPaginated = async <T>(
     currentPage,
     nextPage,
     previusPage,
-    searchTerm: query.searchTerm,
+    search: query.search,
   };
 
   return { data, metadata };

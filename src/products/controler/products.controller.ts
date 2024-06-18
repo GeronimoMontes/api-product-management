@@ -21,6 +21,7 @@ import {
   ApiBody,
   ApiBasicAuth,
 } from '@nestjs/swagger';
+import { PaginateQueryRaw } from '../paginate/paginate';
 
 @ApiBearerAuth('bearer')
 @ApiTags('products')
@@ -37,11 +38,11 @@ export class ProductsController {
 
   @ApiOperation({ summary: 'Retrieve all products' })
   @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'skip', required: false })
+  @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'search', required: false })
   @Get()
-  findAll(@Query() { limit, skip, search }) {
-    return this.productsService.findAll(limit, skip, search);
+  findAll(@Query() { limit, page, search }: PaginateQueryRaw) {
+    return this.productsService.findAll({ limit, page, search });
   }
 
   @ApiOperation({ summary: 'Check if a product name is unique' })

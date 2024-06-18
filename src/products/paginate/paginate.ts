@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery } from 'mongoose';
 
 export interface Metadata {
   totalItems: number;
@@ -6,7 +6,7 @@ export interface Metadata {
   itemsPerPage: number;
   itemsPerPageCount: number;
   currentPage: number;
-  searchTerm: FilterQuery<any>;
+  search: FilterQuery<any> | string;
   nextPage: number;
   previusPage: number;
 }
@@ -17,8 +17,8 @@ export interface Paginate<T> {
 }
 
 export interface PaginateQueryRaw {
-  page?: number; 
-  limit?: number; 
-  searchTerm?: FilterQuery<any>; 
-  sort?: any; 
+  page?: number;
+  limit?: number;
+  search?: string | FilterQuery<any>;
+  sort?: any;
 }
