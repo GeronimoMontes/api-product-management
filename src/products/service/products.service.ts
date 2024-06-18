@@ -36,8 +36,8 @@ export class ProductsService {
   async findAll(paginateQry: PaginateQueryRaw): Promise<Paginate<Product>> {
     const response = await getAllPaginated(this.productModel, paginateQry);
 
-    if (response.metadata.itemsPerPageCount <= 0)
-      throw new NotFoundException('Items not found');
+    // if (response.metadata.itemsPerPageCount <= 0)
+    //   throw new NotFoundException('Items not found');
 
     return response;
   }
