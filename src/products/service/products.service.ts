@@ -1,10 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Model } from 'mongoose';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, MongooseError, Types } from 'mongoose';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
-import { Product } from '../interfaces/products.interface';
-import { InjectModel } from '@nestjs/mongoose';
 import { ProductDoc } from '../interfaces/products-document.interface';
+import { Product } from '../interfaces/products.interface';
+import { Paginate, PaginateQueryRaw } from '../paginate/paginate';
+import { getAllPaginated } from '../paginate/paginate.controler';
 
 @Injectable()
 export class ProductsService {
@@ -12,94 +18,92 @@ export class ProductsService {
     @InjectModel('Products') private readonly productModel: Model<ProductDoc>,
   ) {}
 
+  /**
+   * Create a new product
+   * @param
+   * @returns
+   */
   async create(createProductDto: CreateProductDto): Promise<Product> {
-    try {
-      const createdProduct = await this.productModel.create(createProductDto);
-      return createdProduct;
-    } catch (error) {
-      // Handle specific errors or rethrow for general handling
-      throw new Error(`Could not create product: ${error.message}`);
-    }
+    const createdProduct = await this.productModel.create(createProductDto);
+    return createdProduct;
   }
 
-  async findAll(limit = 25, skip = 0, search = ''): Promise<any> {
-    try {
-      const qry = search !== '' ? { $text: { $search: `\"${search}\"` } } : {};
-      const count = await this.productModel.countDocuments(qry).exec();
-      const page_total = Math.floor((count - 1) / limit) + 1;
-      const data = await this.productModel
-        .find(qry)
-        .sort({ name: 'ascending', description: 'ascending' })
-        .limit(limit)
-        .skip(skip)
-        .exec();
+  /**
+   * Retrieve all products
+   * @param name
+   * @returns
+   */
+  async findAll(paginateQry: PaginateQueryRaw): Promise<Paginate<Product>> {
+    const response = await getAllPaginated(this.productModel, paginateQry);
 
-      return {
-        data: data,
-        count_current_data: data.length,
-        countPages: page_total,
-        resultsCount: count,
-      };
-    } catch (error) {
-      // Handle specific errors or rethrow for general handling
-      throw new Error(`Could not fetch products: ${error.message}`);
-    }
+    // if (response.metadata.itemsPerPageCount <= 0)
+    //   throw new NotFoundException('Items not found');
+
+    return response;
   }
 
+  /**
+   * Check if a product name is unique
+   * @param name
+   * @returns
+   */
   async isNameTaken(name: string): Promise<boolean> {
-    try {
-      const data = await this.productModel.find({ name }).exec();
-      return data.length > 0;
-    } catch (error) {
-      // Handle specific errors or rethrow for general handling
-      throw new Error(
-        `Could not check if name '${name}' is taken: ${error.message}`,
-      );
-    }
+    const data = await this.productModel.find({ name: name });
+    return data.length > 0;
   }
 
+  /**
+   * Retrieve a product by ID
+   * @param name
+   * @returns
+   */
   async findOne(id: string): Promise<Product> {
+    // if (!Types.ObjectId.isValid(id))
+    //   throw new BadRequestException('Id no valid.');
+
     const product = await this.productModel.findOne({ _id: id }).exec();
-    if (!product) {
+
+    if (!product)
       throw new NotFoundException(`Product with id '${id}' not found`);
-    }
+
     return product;
   }
 
-  async update(
-    id: string,
-    updateProductDto: UpdateProductDto,
-  ): Promise<Product> {
-    try {
-      const updatedProduct = await this.productModel
-        .findOneAndUpdate({ _id: id }, updateProductDto, { new: true })
-        .exec();
-      if (!updatedProduct) {
-        throw new NotFoundException(`Product with id '${id}' not found`);
-      }
-      return updatedProduct;
-    } catch (error) {
-      // Handle specific errors or rethrow for general handling
-      throw new Error(
-        `Could not update product with id '${id}': ${error.message}`,
-      );
+  /**
+   * Update a product
+   * @param name
+   * @returns
+   */
+  async update(id: string, productDto: UpdateProductDto): Promise<Product> {
+    // if (!Types.ObjectId.isValid(id))
+    //   throw new BadRequestException('Id no valid.');
+
+    const updatedProduct = await this.productModel
+      .findOneAndUpdate({ _id: id }, productDto, { new: true })
+      .exec();
+
+    if (!updatedProduct) {
+      throw new NotFoundException(`Product with id '${id}' not found`);
     }
+    return updatedProduct;
   }
 
+  /**
+   * Delete a product
+   * @param name
+   * @returns
+   */
   async remove(id: string): Promise<Product> {
-    try {
-      const deletedProduct = await this.productModel
-        .findByIdAndDelete({ _id: id })
-        .exec();
-      if (!deletedProduct) {
-        throw new NotFoundException(`Product with id '${id}' not found`);
-      }
-      return deletedProduct;
-    } catch (error) {
-      // Handle specific errors or rethrow for general handling
-      throw new Error(
-        `Could not delete product with id '${id}': ${error.message}`,
-      );
-    }
+    // if (!Types.ObjectId.isValid(id))
+    //   throw new BadRequestException('Id no valid.');
+
+    const deletedProduct = await this.productModel
+      .findByIdAndDelete({ _id: id })
+      .exec();
+
+    if (!deletedProduct)
+      throw new NotFoundException(`Product with id '${id}' not found`);
+
+    return deletedProduct;
   }
 }
